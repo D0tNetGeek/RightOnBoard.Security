@@ -40,7 +40,7 @@ namespace RightOnBoard.Security.Api.Controllers
 
             if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
 
-            return new OkObjectResult("Account created successfully !!");
+            return new OkObjectResult("Account created successfully !!!");
         }
     }
 }
