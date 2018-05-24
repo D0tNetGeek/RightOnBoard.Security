@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  rightonboard.Security.service:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+  rightonboard.Security.api:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "80"
+networks:
+  default:
+    external:
+      name: nat
+

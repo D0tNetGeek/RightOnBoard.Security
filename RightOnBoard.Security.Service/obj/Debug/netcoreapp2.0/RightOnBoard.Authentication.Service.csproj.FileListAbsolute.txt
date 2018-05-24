@@ -1,0 +1,17 @@
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Service\bin\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.deps.json
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Service\bin\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.dll
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Service\bin\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.pdb
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Service\obj\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.csprojResolveAssemblyReference.cache
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Service\obj\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.csproj.CoreCompileInputs.cache
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Service\obj\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.AssemblyInfoInputs.cache
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Service\obj\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.AssemblyInfo.cs
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Service\obj\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.dll
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Service\obj\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.pdb
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Authentication\RightOnBoard.Authentication.Service\bin\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.deps.json
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Authentication\RightOnBoard.Authentication.Service\bin\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.dll
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Authentication\RightOnBoard.Authentication.Service\bin\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.pdb
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Authentication\RightOnBoard.Authentication.Service\obj\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.csproj.CoreCompileInputs.cache
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Authentication\RightOnBoard.Authentication.Service\obj\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.AssemblyInfoInputs.cache
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Authentication\RightOnBoard.Authentication.Service\obj\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.AssemblyInfo.cs
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Authentication\RightOnBoard.Authentication.Service\obj\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.dll
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Authentication\RightOnBoard.Authentication.Service\obj\Debug\netcoreapp2.0\RightOnBoard.Authentication.Service.pdb

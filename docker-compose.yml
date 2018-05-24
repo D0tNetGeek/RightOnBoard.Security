@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  rightonboard.security.service:
+    image: rightonboardsecurityservice
+    build:
+      context: .
+      dockerfile: RightOnBoard.Security.Service\Dockerfile
+
+  rightonboard.security.api:
+    image: rightonboardsecurityapi
+    build:
+      context: .
+      dockerfile: RightOnBoard.Security.Api\Dockerfile
+

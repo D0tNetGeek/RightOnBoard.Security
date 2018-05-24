@@ -1,0 +1,9 @@
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Common\bin\Debug\netstandard2.0\RightOnBoard.Security.Common.deps.json
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Common\bin\Debug\netstandard2.0\RightOnBoard.Security.Common.dll
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Common\bin\Debug\netstandard2.0\RightOnBoard.Security.Common.pdb
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Common\obj\Debug\netstandard2.0\RightOnBoard.Security.Common.csproj.CoreCompileInputs.cache
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Common\obj\Debug\netstandard2.0\RightOnBoard.Security.Common.AssemblyInfoInputs.cache
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Common\obj\Debug\netstandard2.0\RightOnBoard.Security.Common.AssemblyInfo.cs
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Common\obj\Debug\netstandard2.0\RightOnBoard.Security.Common.dll
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Common\obj\Debug\netstandard2.0\RightOnBoard.Security.Common.pdb
+C:\Users\vinnie\source\repos\Insypher\RightOnBoard\RightOnBoard.Security\RightOnBoard.Security.Common\obj\Debug\netstandard2.0\RightOnBoard.Security.Common.csprojResolveAssemblyReference.cache
