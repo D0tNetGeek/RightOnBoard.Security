@@ -2,7 +2,7 @@
 
 namespace RightOnBoard.Security.Api.ViewModels.Validations
 {
-    public class RegistrationViewModelValidator : AbstractValidator<RegistrationViewModel>
+    public class RegistrationViewModelValidator : AbstractValidator<UserViewModel>
     {
         public RegistrationViewModelValidator()
         {

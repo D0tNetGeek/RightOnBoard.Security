@@ -38,7 +38,9 @@ namespace RightOnBoard.Security.Api
 
             services.AddScoped<IAuthService, AuthService>();
 
-            services.AddScoped<IAccountsService, AccountsService>();            
+            services.AddScoped<IAccountsService, AccountsService>();
+
+            services.AddScoped<IUserService, UserService>();
 
             services.AddScoped<DbContext, ApplicationDbContext>();
 

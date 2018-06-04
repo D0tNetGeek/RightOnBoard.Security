@@ -21,7 +21,7 @@ namespace RightOnBoard.Security.Service.Services
             _mapper = mapper;
         }
 
-        public async Task<IdentityResult> Register(RegistrationModel model)
+        public async Task<IdentityResult> Register(UserModel model)
         {
             var userIdentity = _mapper.Map<ApplicationUser>(model);
 

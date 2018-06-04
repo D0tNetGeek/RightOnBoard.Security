@@ -25,14 +25,14 @@ namespace RightOnBoard.Security.Api.Controllers
         [AllowAnonymous]
         [IgnoreAntiforgeryToken]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody]RegistrationViewModel model)
+        public async Task<IActionResult> Post([FromBody] UserViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var registrationModel = _mapper.Map<RegistrationModel>(model);
+            var registrationModel = _mapper.Map<UserModel>(model);
 
             //var registrationModel = _mapper.Map<RegistrationModel>(model);
 

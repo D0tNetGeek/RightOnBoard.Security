@@ -6,6 +6,6 @@ namespace RightOnBoard.Security.Service.Interfaces
 {
     public interface IAccountsService
     {
-        Task<IdentityResult> Register(RegistrationModel model);
+        Task<IdentityResult> Register(UserModel model);
     }
 }

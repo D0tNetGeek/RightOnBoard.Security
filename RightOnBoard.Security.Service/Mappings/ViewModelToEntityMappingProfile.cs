@@ -8,7 +8,7 @@ namespace RightOnBoard.Security.Service.Mappings
     {
         public ViewModelToEntityMappingProfile()
         {
-            CreateMap<RegistrationModel, ApplicationUser>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
+            CreateMap<UserModel, ApplicationUser>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
         }
     }
 }
