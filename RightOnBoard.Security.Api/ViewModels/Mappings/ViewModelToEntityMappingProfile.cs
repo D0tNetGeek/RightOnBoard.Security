@@ -6,7 +6,7 @@ namespace RightOnBoard.Security.Api.ViewModels.Mappings
     {
         public ViewModelToEntityMappingProfile()
         {
-            //CreateMap<RegistrationViewModel, ApplicationUser1>().ForMember(au => au.UserName, map => map.MapFrom(vm => vm.Email));
+            CreateMap<RegistrationOptions, RegistrationOptions>().ForMember(au => au.CompanyId, map => map.MapFrom(vm => vm.CompanyId));
         }
     }
 }
