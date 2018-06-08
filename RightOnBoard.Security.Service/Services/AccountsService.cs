@@ -29,9 +29,10 @@ namespace RightOnBoard.Security.Service.Services
 
             if (result.Succeeded)
             {
-                await _appDbContext.Customers.AddAsync(new Customer
+                await _appDbContext.Customers.AddAsync(new Customers
                 {
-                    IdentityId = userIdentity.Id,
+                    //IdentityId = userIdentity.Id,
+                    UserId = userIdentity.Id,
                     Location = model.Location,
 
                 });

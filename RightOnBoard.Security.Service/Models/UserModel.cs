@@ -1,4 +1,6 @@
-﻿namespace RightOnBoard.Security.Service.Models
+﻿using System.Collections.Generic;
+
+namespace RightOnBoard.Security.Service.Models
 {
     public class UserModel
     {
@@ -7,5 +9,15 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Location { get; set; }
+        public List<RegOption> RegOptions { get; set; }
+        public string CompanyName { get; set; }
+        public string RoleId { get; set; }
+        public string RoleName { get; set; }
+    }
+
+    public class RegOption
+    {
+        public string RegistrationOptionId { get; set; }
+        public string RegistrationOptionValueId { get; set; }
     }
 }
