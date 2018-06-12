@@ -15,8 +15,18 @@ namespace RightOnBoard.Security.Service.DbContext
             optionsBuilder.UseSqlServer(@"Data Source=insyphersql1;Initial Catalog=RightOnBoard;Persist Security Info=True;User ID=rightonboard;Password=rightonboard22"); //p_$@,83L6$z~23mW
         }
 
-        public DbSet<Customer> Customers { get; set; }
+        public DbSet<Customers> Customers { get; set; }
 
         public DbSet<UserAudit> UserAuditEvents { get; set; }
+
+        public DbSet<Company> Company { get; set; }
+
+        public DbSet<CustomerRegistrationOptions> CustomerRegistrationOptions { get; set; }
+
+        public DbSet<RegistrationOptionCompany> RegistrationOptionCompany { get; set; }
+
+        public DbSet<RegistrationOptions> RegistrationOptions { get; set; }
+
+        public DbSet<RegistrationOptionValues> RegistrationOptionValues { get; set; }
     }
 }

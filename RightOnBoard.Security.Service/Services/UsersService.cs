@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -48,32 +49,66 @@ namespace RightOnBoard.Security.Service.Services
 
         public async Task<IdentityResult> CreateUser(UserModel user)
         {
-            var userIdentity = _mapper.Map<ApplicationUser>(user);
+             IdentityResult result = new IdentityResult();
 
-            var result = await _userManager.CreateAsync(userIdentity, user.Password);
-
-            if (result.Succeeded)
+            try
             {
-                var res = await _appDbContext.Customers.AddAsync(new Customers
+                var userIdentity = new ApplicationUser
                 {
-                    //IdentityId = userIdentity.Id,
-                    UserId = userIdentity.Id,
-                    Location = user.Location,
+                    Email = user.Email,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PasswordHash = user.Password,
+                    UserName = user.Email
+                };
 
-                });
+                result = await _userManager.CreateAsync(userIdentity, user.Password);
 
-                if(res.State == Microsoft.EntityFrameworkCore.EntityState.Added)
-                {
-                    await _appDbContext.UserRoles.AddAsync(new IdentityUserRole<string>
+                if (result.Succeeded)
+                {                    
+                        var resUserRoles = await _appDbContext.UserRoles.AddAsync(new IdentityUserRole<string>
+                        {
+                            UserId = userIdentity.Id,
+                            RoleId = user.RoleId
+                        });
+
+                    if (resUserRoles.State == Microsoft.EntityFrameworkCore.EntityState.Added)
                     {
-                        UserId = "",
-                        RoleId = user.RoleId
-                    });
+                        var customerId = Guid.NewGuid();
+
+                        var resCustomer = await _appDbContext.Customers.AddAsync(new Customers
+                        {
+                            Id = customerId.ToString(),
+                            UserId = userIdentity.Id,
+                            CompanyId = user.CompanyId,
+                            Location = user.Location
+                        });
+
+                        await _appDbContext.SaveChangesAsync();
+
+                        //if (resCustomer.State == Microsoft.EntityFrameworkCore.EntityState.)
+                        //{
+
+                            await _appDbContext.CustomerRegistrationOptions.AddRangeAsync((from userReg in user.RegOptions
+                                                                                           select new CustomerRegistrationOptions
+                                                                                           {
+                                                                                               CustomerId = customerId.ToString(),
+                                                                                               RegistrationOptionId = userReg.RegistrationOptionId,
+                                                                                               RegistrationOptionValueId = userReg.RegistrationOptionValueId
+                                                                                           }).ToList());
+
+                            await _appDbContext.SaveChangesAsync();
+                        //}
+                    }
+                    else
+                    {
+                        return IdentityResult.Failed();
+                    }
                 }
-                else
-                {
-                    return IdentityResult.Failed();
-                }
+            }
+            catch(Exception e)
+            {
+                throw;
             }
 
             return result;

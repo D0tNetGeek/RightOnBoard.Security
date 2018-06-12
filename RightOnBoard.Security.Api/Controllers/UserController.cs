@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -53,13 +54,39 @@ namespace RightOnBoard.Security.Api.Controllers
                 return BadRequest(ModelState);
             }
 
-            var userModel = _mapper.Map<Service.Models.UserModel>(user);
+            Service.Models.UserModel userModel = new Service.Models.UserModel
+            {
+                CompanyId = user.CompanyId,
+                CompanyName = user.CompanyName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Location = user.Location,
+                Password = user.Password,
+                RoleId = user.RoleId,
+                RoleName = user.RoleName,
+                RegOptions = (from reg in user.RegOptions
+                              select new Service.Models.RegOption
+                              {
+                                  RegistrationOptionId = reg.Split(":")[0],
+                                  RegistrationOptionValueId = reg.Split(":")[1]
+                              }
+                ).ToList()
+            };
+
+            //var userModel = _mapper.Map<Service.Models.UserModel>(user);
 
             var result = await _userService.CreateUser(userModel);
 
             if (!result.Succeeded) return new BadRequestObjectResult(Errors.AddErrorsToModelState(result, ModelState));
 
-            return new OkObjectResult("Account created successfully !!!");
+
+            if (result.Succeeded)
+                return Ok(result);
+            else
+                return
+                    BadRequest();
+            //return new OkObjectResult("Account created successfully !!!");
         }
 
         [HttpGet]

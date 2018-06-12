@@ -1,6 +1,10 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
+using System.Text;
+using System.Threading.Tasks;
 using AutoMapper;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -11,8 +15,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using RightOnBoard.JwtAuthTokenServer.Service.Interfaces;
+using RightOnBoard.JwtAuthTokenServer.Service.Models;
+using RightOnBoard.JwtAuthTokenServer.Service.Models.Entities;
+using RightOnBoard.JwtAuthTokenServer.Service.Services;
 using RightOnBoard.Security.Api.Models;
 using RightOnBoard.Security.Service.DbContext;
 using RightOnBoard.Security.Service.Interfaces;
@@ -36,98 +46,109 @@ namespace RightOnBoard.Security.Api
             //services.Configure<BearerTokensOptions>(options => Configuration.GetSection("BearerTokens").Bind(options));
             services.Configure<ApiSettings>(options => Configuration.GetSection("ApiSettings").Bind(options));
 
-            services.AddScoped<IAuthService, AuthService>();
-
-            services.AddScoped<IAccountsService, AccountsService>();
-
-            services.AddScoped<IUserService, UserService>();
-
             services.AddScoped<DbContext, ApplicationDbContext>();
 
             services.AddScoped<DbContextOptions<ApplicationDbContext>>();
 
-            services.AddScoped<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>();
-            services.AddScoped<UserManager<ApplicationUser>>();
-            
-            //services.AddScoped<IUserService, UserService>();
-            //services.AddScoped<ISecurityService, SecurityService>();
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("RightOnBoardConnectionString"), b => b.MigrationsAssembly("RightOnBoard.Security.Api")));
+
+            services.AddScoped<IAuthService, AuthService>();
+
+            services.AddScoped<IAccountsService, AccountsService>();
+
+            services.AddScoped<IUsersService, UsersService>();
+
+            services.AddScoped<ISecurityService, SecurityService>();
+
+            services.AddScoped<IUserService, UserService>();
+
+            services.AddScoped<IUserStore<JwtAuthTokenServer.Service.Models.Entities.ApplicationUser>, UserStore<JwtAuthTokenServer.Service.Models.Entities.ApplicationUser>>();
+
+            services.AddScoped<UserManager<JwtAuthTokenServer.Service.Models.Entities.ApplicationUser>>();
+
+            services.AddScoped<IPasswordHasher<JwtAuthTokenServer.Service.Models.Entities.ApplicationUser>, PasswordHasher<JwtAuthTokenServer.Service.Models.Entities.ApplicationUser>>();
+
+            services.TryAddScoped<ILookupNormalizer, UpperInvariantLookupNormalizer>();
+            // No interface for the error describer so we can add errors without rev'ing the interface
+            services.TryAddScoped<IdentityErrorDescriber>();
+
+
+            //services.AddScoped<IUserService, UserService>();            
             //services.AddScoped<ITokenStoreService, TokenStoreService>();
             //services.AddScoped<ITokenValidatorService, TokenValidatorService>();
             //services.AddScoped<JwtAuthTokenServer.DataLayer>();
 
-            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("RightOnBoardConnectionString"), b => b.MigrationsAssembly("RightOnBoard.Security.Api")));
 
-            services.AddScoped<IPasswordHasher<ApplicationUser>, PasswordHasher<ApplicationUser>>();
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<Service.Models.Entities.ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-                //.AddUserManager<AuditableUserManager<ApplicationUser>>();
+            //.AddUserManager<AuditableUserManager<ApplicationUser>>();
 
             //services.AddScoped<SignInManager<ApplicationUser>, AuditableSignInManager<ApplicationUser>>();
 
-            //// Only needed for custom roles.
-            //services.AddAuthorization(options =>
-            //{
-            //    options.AddPolicy(CustomRoles.Admin, policy => policy.RequireRole(CustomRoles.Admin));
-            //    options.AddPolicy(CustomRoles.User, policy => policy.RequireRole(CustomRoles.User));
-            //    options.AddPolicy(CustomRoles.Editor, policy => policy.RequireRole(CustomRoles.Editor));
-            //});
+            // Only needed for custom roles.
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy(CustomRoles.Admin, policy => policy.RequireRole(CustomRoles.Admin));
+                options.AddPolicy(CustomRoles.User, policy => policy.RequireRole(CustomRoles.User));
+                options.AddPolicy(CustomRoles.Editor, policy => policy.RequireRole(CustomRoles.Editor));
+            });
 
-            //// Needed for jwt auth.
-            //services
-            //    .AddAuthentication(options =>
-            //    {
-            //        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //        options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-            //        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    })
-            //    .AddJwtBearer(cfg =>
-            //    {
-            //        cfg.RequireHttpsMetadata = false;
-            //        cfg.SaveToken = true;
-            //        cfg.TokenValidationParameters = new TokenValidationParameters
-            //        {
-            //            ValidIssuer = Configuration["BearerTokens:Issuer"], // site that makes the token
-            //            ValidateIssuer = false, // TODO: change this to avoid forwarding attacks
-            //            ValidAudience = Configuration["BearerTokens:Audience"], // site that consumes the token
-            //            ValidateAudience = false, // TODO: change this to avoid forwarding attacks
-            //            IssuerSigningKey =
-            //                new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["BearerTokens:Key"])),
-            //            ValidateIssuerSigningKey = true, // verify signature to avoid tampering
-            //            ValidateLifetime = true, // validate the expiration
-            //            ClockSkew = TimeSpan.Zero // tolerance for the expiration date
-            //        };
-            //        cfg.Events = new JwtBearerEvents
-            //        {
-            //            OnAuthenticationFailed = context =>
-            //            {
-            //                var logger = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>()
-            //                    .CreateLogger(nameof(JwtBearerEvents));
-            //                logger.LogError("Authentication failed.", context.Exception);
-            //                return Task.CompletedTask;
-            //            },
-            //            OnTokenValidated = context =>
-            //            {
-            //                var tokenValidatorService = context.HttpContext.RequestServices
-            //                    .GetRequiredService<ITokenValidatorService>();
-            //                return tokenValidatorService.ValidateAsync(context);
-            //            },
-            //            OnMessageReceived = context => { return Task.CompletedTask; },
-            //            OnChallenge = context =>
-            //            {
-            //                var logger = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>()
-            //                    .CreateLogger(nameof(JwtBearerEvents));
-            //                logger.LogError("OnChallenge error", context.Error, context.ErrorDescription);
-            //                return Task.CompletedTask;
-            //            }
-            //        };
-            //    });
+            // Needed for jwt auth.
+            services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(cfg =>
+                {
+                    cfg.RequireHttpsMetadata = false;
+                    cfg.SaveToken = true;
+                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidIssuer = Configuration["BearerTokens:Issuer"], // site that makes the token
+                        ValidateIssuer = false, // TODO: change this to avoid forwarding attacks
+                        ValidAudience = Configuration["BearerTokens:Audience"], // site that consumes the token
+                        ValidateAudience = false, // TODO: change this to avoid forwarding attacks
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["BearerTokens:Key"])),
+                        ValidateIssuerSigningKey = true, // verify signature to avoid tampering
+                        ValidateLifetime = true, // validate the expiration
+                        ClockSkew = TimeSpan.Zero // tolerance for the expiration date
+                    };
+                    cfg.Events = new JwtBearerEvents
+                    {
+                        OnAuthenticationFailed = context =>
+                        {
+                            var logger = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>()
+                                .CreateLogger(nameof(JwtBearerEvents));
+                            logger.LogError("Authentication failed.", context.Exception);
+                            return Task.CompletedTask;
+                        },
+                        //OnTokenValidated = context =>
+                        //{
+                        //    var tokenValidatorService = context.HttpContext.RequestServices
+                        //        .GetRequiredService<ITokenValidatorService>();
+                        //    return tokenValidatorService.ValidateAsync(context);
+                        //},
+                        OnMessageReceived = context => { return Task.CompletedTask; },
+                        OnChallenge = context =>
+                        {
+                            var logger = context.HttpContext.RequestServices.GetRequiredService<ILoggerFactory>()
+                                .CreateLogger(nameof(JwtBearerEvents));
+                            logger.LogError("OnChallenge error", context.Error, context.ErrorDescription);
+                            return Task.CompletedTask;
+                        }
+                    };
+                });
 
             // add identity
-            var builder1 = services.AddIdentityCore<ApplicationUser>(o =>
+            var builder1 = services.AddIdentityCore<Service.Models.Entities.ApplicationUser>(o =>
             {
                 // configure identity options
                 o.Password.RequireDigit = false;

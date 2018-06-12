@@ -10,7 +10,7 @@ namespace RightOnBoard.Security.Api.ViewModels
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Location { get; set; }
-        public List<RegOption> RegOptions { get; set; }
+        public string[] RegOptions { get; set; }
         public string CompanyName { get; set; }
         public string RoleId { get; set; }
         public string RoleName { get; set; }
