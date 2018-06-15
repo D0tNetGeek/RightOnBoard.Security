@@ -35,6 +35,7 @@ namespace RightOnBoard.Security.Api.Controllers
             return (from ul in userList
                 select new UserViewModel
                 {
+                    CompanyId = ul.CompanyId,
                     Email = ul.Email,
                     FirstName = ul.FirstName,
                     LastName = ul.LastName,

@@ -38,6 +38,7 @@ namespace RightOnBoard.Security.Service.Services
                     join r in _appDbContext.Roles on ur.RoleId equals r.Id
                 select new UserModel
                 {
+                    CompanyId = c.CompanyId,
                     Email = ul.Email,
                     FirstName = ul.FirstName,
                     LastName = ul.LastName,
